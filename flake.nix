@@ -27,7 +27,7 @@
     {
       # A Nixpkgs overlay.
       overlay = final: prev: {
-        # Our package definition
+        # Our package definitions
         sfile = with final; stdenv.mkDerivation rec {
           pname = "sfile";
           inherit version;
@@ -36,6 +36,26 @@
 
           nativeBuildInputs = [ autoreconfHook ];
         };
+
+        file-fuzzer = with final; stdenv.mkDerivation rec {
+          pname = "file-fuzzer";
+          inherit version;
+
+          src = ./.;
+
+          phases = "installPhase";
+
+          buildInputs = [ sfile lolcat ];
+
+          nativeBuildInputs = [ makeWrapper ];
+
+          installPhase = ''
+            mkdir -p $out/bin
+            cp $src/file-fuzzer $out/bin/file-fuzzer
+            wrapProgram $out/bin/file-fuzzer \
+              --prefix PATH : ${lib.makeBinPath [ sfile lolcat ]}
+          '';
+        };
       };
 
 
@@ -43,13 +63,13 @@
       # Provide some binary packages for selected system types.
       packages = forAllSystems (system:
         {
-          inherit (nixpkgsFor.${system}) sfile;
+          inherit (nixpkgsFor.${system}) sfile file-fuzzer;
         });
 
       # The default package for 'nix build'. This makes sense if the
       # flake provides only one package or there is a clear "main"
       # package.
-      defaultPackage = forAllSystems (system: self.packages.${system}.sfile);
+      defaultPackage = forAllSystems (system: self.packages.${system}.file-fuzzer);
 
       # Tests run by 'nix flake check' and by Hydra.
       checks = forAllSystems

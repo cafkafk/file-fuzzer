@@ -3,8 +3,6 @@
 set -e
 dir="test_files/gen_tests"
 
-make
-
 echo "[*] Generating a $dir directory.."
 mkdir -p $dir
 
@@ -25,7 +23,7 @@ for f in $dir/*.input
 do
   echo "[+] >>> Testing ${f}..."
   file    "${f}" | sed 's/ASCII text.*/ASCII text/' > "${f}.expected"
-  ./sfile  "${f}" > "${f}.actual"
+  sfile  "${f}" > "${f}.actual"
 
   if ! diff -u "${f}.expected" "${f}.actual"
   then
