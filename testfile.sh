@@ -25,7 +25,7 @@ for f in $dir/*.input
 do
   echo "[+] >>> Testing ${f}..."
   file    "${f}" | sed 's/ASCII text.*/ASCII text/' > "${f}.expected"
-  ./file  "${f}" > "${f}.actual"
+  ./sfile  "${f}" > "${f}.actual"
 
   if ! diff -u "${f}.expected" "${f}.actual"
   then
