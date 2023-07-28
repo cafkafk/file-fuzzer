@@ -25,9 +25,9 @@
     in
 
     {
-            # A Nixpkgs overlay.
+      # A Nixpkgs overlay.
       overlay = final: prev: {
-
+        # Our package definition
         sfile = with final; stdenv.mkDerivation rec {
           pname = "sfile";
           inherit version;
@@ -36,7 +36,6 @@
 
           nativeBuildInputs = [ autoreconfHook ];
         };
-
       };
 
 
@@ -77,8 +76,6 @@
               installPhase = "mkdir -p $out";
             };
           }
-
         );
-
     };
 }
