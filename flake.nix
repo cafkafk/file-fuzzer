@@ -27,7 +27,7 @@
     {
       # A Nixpkgs overlay.
       overlay = final: prev: {
-        # Our package definitions
+        # Our simple file clone
         sfile = with final; stdenv.mkDerivation rec {
           pname = "sfile";
           inherit version;
@@ -37,6 +37,7 @@
           nativeBuildInputs = [ autoreconfHook ];
         };
 
+        # Our file fuzzer, dependent on the simple file clone
         file-fuzzer = with final; stdenv.mkDerivation rec {
           pname = "file-fuzzer";
           inherit version;
