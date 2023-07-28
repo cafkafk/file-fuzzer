@@ -1,12 +1,20 @@
+prefix = @prefix@
+exec_prefix = @exec_prefix@
+bindir = @bindir@
+
 CC=gcc
 CFLAGS=-std=c11 -Wall -Werror -Wextra -pedantic -g
 
 sfile: sfile.c Makefile
 	$(CC) $(CFLAGS) -o sfile sfile.c
 
+install: sfile
+	install -d $(bindir)
+	install -t $(bindir) sfile
+
 clean:
 	rm -f *.o
-	rm -f file
+	rm -f sfile
 
 test:
 	./test.sh
